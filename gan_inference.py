@@ -1,18 +1,10 @@
-import pretty_midi
-import reverse_pianoroll
-import convert
-import librosa
-import numpy as np
-import sys
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import os
-from os import listdir
-import glob
-import read
 import argparse
+import os
+import numpy as np
+import tensorflow as tf
+import convert
+import read
+import reverse_pianoroll
 
 lowest_note = 0 #the index of the lowest note on the piano roll
 highest_note = 78 #the index of the highest note on the piano roll

@@ -1,0 +1,4 @@
+tensorflow==1.15.2
+pretty_midi==0.2.9
+librosa==0.8.1
+matplotlib==3.4.1

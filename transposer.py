@@ -135,7 +135,7 @@ def main():
     file_name = None
     try:
         options, arguments = getopt.getopt(sys.argv[1:], 'f:t:', ['from=', 'to=', 'doctest'])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         print
         str(err)
         usage()

@@ -1,28 +1,11 @@
-import pretty_midi
-import reverse_pianoroll
-import convert
-import librosa
-import numpy as np
-import sys
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import os
-from os import listdir
-import glob
-import read
 import argparse
-import midi_manipulation
-import numpy as np
-import pandas as pd
-import msgpack
-import glob
-import tensorflow as tf
-from tensorflow.python.ops import control_flow_ops
 import os
-from tqdm import tqdm
-import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+import convert
+import midi_manipulation
+import read
+import reverse_pianoroll
 
 lowest_note = 0 #the index of the lowest note on the piano roll
 highest_note = 78 #the index of the highest note on the piano roll
@@ -43,13 +26,13 @@ parser.add_argument("--vae_checkpoint_dir", default="vaesaved", type=str)
 args = parser.parse_args()
 
 
-imported_gan = tf.train.import_meta_graph("./"+args.gan_checkpoint_dir+"/model.ckpt.meta")
+imported_gan = tf.train.import_meta_graph("./" + args.gan_checkpoint_dir + "/GANmodel.ckpt.meta")
 #for testing, i'll be using a different dataset of MIDI files to input into the generator here.
 test_songs = read.get_songs(args.dataset_dir)
 test_chromas = read.get_chromas(test_songs)
 
 sess = tf.Session()
-imported_gan.restore(sess, "./"+args.gan_checkpoint_dir+"/model.ckpt")
+imported_gan.restore(sess, "./"+args.gan_checkpoint_dir+"/GANmodel.ckpt")
 graph = tf.get_default_graph()
 G_W1g = graph.get_operation_by_name('gen/G_W1').outputs[0]
 G_b1g = graph.get_operation_by_name('gen/G_b1').outputs[0]
@@ -120,12 +103,12 @@ sess.close()
 tf.reset_default_graph()
 
 
-imported_vae = tf.train.import_meta_graph("./"+args.vae_checkpoint_dir+"/modelv.ckpt.meta")
+imported_vae = tf.train.import_meta_graph("./"+args.vae_checkpoint_dir+"/VAEmodel.ckpt.meta")
 
 for i in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
   print(i.name)   # i.name if you want just a name
 sess = tf.Session()
-imported_vae.restore(sess, "./"+args.vae_checkpoint_dir+"/modelv.ckpt")
+imported_vae.restore(sess, "./"+args.vae_checkpoint_dir+"/VAEmodel.ckpt")
 graph = tf.get_default_graph()
 Q_b1g = graph.get_operation_by_name('S/Q_b1').outputs[0]
 Q_W1g = graph.get_operation_by_name('S/Q_W1').outputs[0]
